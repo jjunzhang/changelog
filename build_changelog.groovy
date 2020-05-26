@@ -8,7 +8,7 @@ node {
 
         stage('Git changelog generation') {
             buildImage.inside() {
-                if (env.BRANCH_NAME == 'BRANCH_MASTER') {
+                if (env.BRANCH_NAME == 'master') {
                     sh "git config --global user.email 'no-email-jenkins@alpiq.com'; git config --global user.name 'Jenkins'"
                     sh "git remote -v"
 
@@ -18,7 +18,7 @@ node {
                     sh "mkdir -p ~/.ssh"
 
                     // Generate changelog
-                    def gitTagPrevious = sh(script: "gitchangelog ${gitTagPrevious} >> CHANGELOG_TEST.md", returnStdout: true).trim()
+                    def changelog = sh(script: "gitchangelog ${gitTagPrevious} >> CHANGELOG_TEST.md", returnStdout: true).trim()
 
                     // Commit changelog
                     sshagent (credentials: ['XXX_Credential_to_Bitbucket']) {
